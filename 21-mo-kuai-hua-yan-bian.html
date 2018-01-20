@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script type="application/javascript">
+    /*
+    * 模块化演变
+    * .js的全局变量
+    * .var a=b=c=9;//b和c是全局变量
+    * .JS开发的灾难：
+    *   .全局变量相互污染
+    *   .不同开发人员
+    *   .不同框架中的全局变量相互干扰
+    *   .没有模块、命名空间等手段。
+    * .解决多人合作和模拟模块的尝试
+    *   .模拟命名空间
+    *   .自执行函数模拟局部作用域
+    *   .模块化尝试封装
+    * */
+    //问题：
+    function demo(){
+        var a=b=c=9;
+    }
+    demo();
+//    console.log(a);//报错
+    console.log(b);//9
+    console.log(c);//9
+
+    //团队合作噩梦：变量冲突
+    //比如 a.js
+    var m=0;
+    console.log(m)
+    //b.js
+    var m='sss';
+
+
+    //解决方案：
+    //第一种：命名空间
+    //a.js  Jack
+    var Shop={};//顶层命名空间
+    Shop.User={};//电商的用户模块
+    Shop.User.UserList={};//用户列表页面模块
+    Shop.User.UserList.length=19;//用户一共有19个
+    //b.js Tom
+    Shop.User.UserDetail={};
+    Shop.User.UserDetail.length=20;
+    //打印
+    console.log(Shop.User.UserList.length);
+    console.log(Shop.User.UserDetail.length);
+    //进一步演变==>给单个文件里面定义的局部变量都变成局部作用域里面的变量
+    //a.js Jack
+    ;(function(){//通过匿名函数产生块级作用域
+         window.Shop={};
+         window.Shop.User={};
+         window.Shop.UserDetail={};
+         var a=5;
+    })();
+    //b.js Tom
+    ;(function(){
+        window.Shop.User.UserDetail={};
+        window.Shop.User.UserDetail.length=20;
+        var a=6;
+    })();
+    //局部作用域和命名空间的用法提高了变量冲突的可itf能性
+
+    //===>进一步发展：希望把自己的基类的很多工具封装成一个框架
+    //btn \ form \animate
+    //Jack.js
+    ;(function(w){
+        //判断Jack框架是否存在
+        if(!w.Jack){
+            w.Jack={}
+        }
+        Jack.Btn={
+          getVal:function(){
+              console.log('val')
+          },
+          setVal:function(str){
+              console.log('setVal')
+          }
+        };
+//        w.Jack=Jack;//把Jack这个对象传递给window全局
+    })(window||{});
+    //Jack.animate.js
+    (function(w){
+        if(!w.Jack){
+            w.Jack={}
+        }
+        w.Jack.animate={};
+    })(window||{})
+        //Jack.form.js
+    (function(w){
+        if(!w.Jack){
+            w.Jack={}
+        }
+        w.Jack.form={};
+    })(window||{})
+</script>
+</html>

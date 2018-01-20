@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+</body>
+<script type="application/javascript">
+    /*
+    * 函数式编程
+    * 1.函数是Javascript的一等公民
+    * 2.所谓'第一等公民'，指的是函数与其他数据类型一样，处于平等地位，可以赋值给其他变量
+    * 也可以作为参数，传入另个函数，或者作为别的函数的返回值
+    * 3.数组的sort方法回顾
+    * 4.数组的map方法(支持IE9+)
+    *   返回新数组
+    *   方法接受一个回调函数，回调函数三个参数：当前项、索引、操作数组
+    *   不影响原来的数组
+    * 5.数组的forEach方法(IE9+支持)
+    *   放回：undefined
+    *   forEach方法按升序为数组中含有效值的每一项执行一次callback函数，那些已经删除(使用
+    *   delete方法等情况)或者为初始化的项将被跳过(但是不包括那些值为undefined的项)(例如
+    *   在稀疏数组上)。
+    *   回调函数的参数：
+    *       数组当前项的值
+    *       数组当前项的索引
+    *       数组对象本身
+    *
+    * 6.函数的属性和方法
+    *   .函数本身也是一种对象。构造函数是Function
+    *   fun  instanceof Object   ==>true
+    *       语法：实例对象 instanceof 构造函数
+    *       instanceof运算符用来检测constructor.prototype是否存在于参数object的原型链
+    *   .函数有内部属性：arguments，可以在函数的内部使用。
+    *   .函数自身的属性：length,函数定义的形参个数。
+    *   .另外我可以自定义函数的其他属性和方法。【一般用于全局变量，静态变量，公共存储等】
+    * */
+    //数组的Array.prototype.sort 排序  默认按字符串比较大小的算法
+    var t=[6,48,91,16,64];
+    console.log(t.sort());
+
+    //按照数值大小
+    t.sort(function(a,b){//把函数当做一个参数使用
+    // 如果a>b return 大于0的值
+        //a===b return 0
+        //a<b return 小于0的值
+        return a-b;
+
+    });
+    console.log(t);
+
+    //map方法
+    var arr=[12,3,4,5,6];
+//    for(var i in t){//之前的方法
+//        console.log(i);
+//    }
+    //将数组中的每个元素都进行*2、打印结果数组
+    //map返回一个新的数组
+//    var newArr= t.map(function(item,index,array){
+//        //item 当前选项
+//        //index 当前索引
+//        //array  当前数组
+//    });
+        var newArr= arr.map(function(item){
+            return item*2;
+        });
+    console.log(newArr);
+
+
+    //forEach方法
+    var arr2=[13,'jack','tom',true,56];
+    arr2.forEach(function(item,index){
+        console.log('index:'+index+' '+item);
+    })
+
+    //函数也是对象
+    function fun1(a,b){
+        console.log(a+b);
+    }
+    console.log(fun1.length);
+    //函数fun1也是一个对象
+    fun1.age=20;
+    console.log(fun1.age);
+    console.dir(fun1);
+</script>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script type="application/javascript">
+    /*
+    * 函数的递归调用
+    *   .函数的递归调用就是指：函数调用本身。
+    *   .arguments.callee就是指向函数自身的变量，所以可以直接用它来代替函数名，在
+    *   匿名函数中非常有用。但是在  严格模式下 会报错
+    *   .函数表达式方式定义的时候，还可以用命名函数表达式
+    *   例如：
+    *   var f=function s(){};//在s函数内部，可以直接使用s变量。
+    *
+    * */
+    //求1-100的和
+    //常规写法
+//    var sum=0;
+//    var n=100;
+//    for(var i=1;i<=100;i++){
+//        sum+=i;
+//    }
+//    console.log(sum);
+
+
+    //用递归实现
+    function sumNumber(num){
+        //递归一定要有一个结束出口
+        if(num<=1){
+            return num;
+        }
+        //实现函数调用自己
+//        return sumNumber(num-1)+num;
+        //arguments.callee在严格模式下不可以
+        return arguments.callee(num-1)+num
+    }
+    console.log(sumNumber(100));
+
+
+    //递归案例
+    //1.
+    var f=function(){
+        console.log('sss');
+    }
+    f();//调用函数表达式执行
+
+    var m=function fun(){
+    //函数命名表达式。fun相当于在函数内部添加了一个变量fun,fun指向函数自身
+    // fun===arguments.callee
+    //fun的作用域在函数内部。不会影响函数外面的声明的参数或者函数
+        console.log('fun');
+    }
+    m();
+
+    //2.num阶乘
+    function factorial(num){
+        if(num==1){
+            return 1;
+        }
+        return num*factorial(num-1);
+    }
+    console.log(factorial(4));
+
+    //3.递归求菲波那切数列。 f(n)=f(n-1)+f(n-2);  n>=3
+    //f(0)=0,f(1)=1,f(2)=1,f(3)=2....f(4)=3
+    function fibonaqie(i){
+        if(i==1){
+            return 1;
+        }
+        if(i==0){
+            return 0;
+        }
+        return fibonaqie(i-1)+fibonaqie(i-2);
+    }
+   console.log(fibonaqie(5));
+</script>
+</html>

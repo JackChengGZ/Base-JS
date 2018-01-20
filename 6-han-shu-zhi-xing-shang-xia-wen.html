@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script type="application/javascript">
+    /*
+    * 函数执行上下文的相关概念
+    * 栈的数据结构：先进后出
+    * EC:函数执行环境(或执行上下文),Execution Context；javascript会自动生成
+    * ECS:执行环境栈，Execution Context Stack
+    * VO(变量对象)：是说js的执行上下文中都有个对象用来存放执行上下文可被访问但是不能
+    *               被delete的函数标示符、形参、变量声明等==>主要是存储Global全局
+    *               的变量
+    * AO(活动对象):有了变量对象存每个上下文中的东西，就是每进入一个执行上下文时，这个
+    *               执行上下文中的变量对象就被激活，就是在该上下文中的函数参数，变量
+    *               等就可以被访问。==>主要是存储函数内部的变量
+    *
+    *scope chain:作用域链
+    * */
+
+
+    //在代码执行之前的时候，就会立即创建一个全局的执行上下文Global Execution Context
+    //在创建完全局的执行上下文之后，把全局执行上下文压入执行环境栈ECS
+    function f1(){console.log('f1')}
+    function f2(){
+
+        console.log('f2');
+        f3();
+    }
+    function f3(){
+
+        console.log('f3');
+        f4();
+    }
+    function f4(){console.log('f4')}
+    f1();//代码进入执行f1函数，函数内的代码在执行之前，js执行引擎立即创建一个f1的
+    // 执行环境f1 Execution Context  立即把这个执行环境压入到执行环境栈ECS，当f1()h
+    // 函数执行完成之后，从执行环境栈中弹出f1的执行上下文
+
+    //f2()函数执行之前，创建f2的执行上下文。压栈到执行环境栈ECS
+    f2();//f2()==>f3()==>f4()
+    //因为f2调用了f3函数。f3函数执行之前也创建了一个f3的执行上下文，并压栈到执行环
+    //境栈中，f3函数调用了f4函数，创建f4的EC。并把f4的EC压入到ECS中
+    //f4执行完成，f4的EC出栈
+    //f3执行完成，f3的EC出栈
+    //f2执行完成，f2的EC出栈
+</script>
+</html>

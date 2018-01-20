@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<ul>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+    <li>5</li>
+</ul>
+</body>
+<script type="application/javascript">
+    /*
+    * 闭包(Closure)
+    *   .函数的作用域：函数作用域与全局作用域
+    *   .没有块级作用域
+    *   .闭包的使用
+    *   .沙箱模式
+    *
+    *
+    * 1. 是引用了自由变量的函数。这个被引用的自由变量将和这个函数一同存在，即使已经离开了
+    *创造它的环境也不例外。所以，有另一种说法认为闭包是由函数和其相关的引用环境组合而成
+    *的实体。
+    * 2.闭包是一个函数和函数所声明的词法环境的结合。
+    * 3.结论：Javascript中任何一个函数都是闭包
+    * 4.特殊情况：由于函数嵌套调用的时候，如果内部函数访问外部函数的变量，可导致
+    *
+    *
+    * 闭包的应用：
+    * 1.匿名函数自执行模拟块级作用域
+    * (function(){
+    *   //块级作用域环境
+    * })()
+    * 2.循环注册dom事件中的index
+    * 3.setTimeOut中的闭包应用
+    * for(var i=0;i<10;i++){
+    *   setTimeout(function(){
+    *   console.log(i)
+    *   },1000)
+    * }
+    *
+        *
+    * 闭包的缺点
+    * .闭包会导致Javascript执行效率下降。(目前V8引擎已经对闭包做了很多优化，可以不考虑了)
+    * .闭包导致内存会驻留，如果是大量对象的闭包环境注意内存消耗
+    *
+    * */
+    //其实任何一个函数都是闭包
+    function foo(x){
+        var tmp=3;
+        return function(y){
+            console.log(x+y+(++tmp));
+        }
+    }
+    var bar=foo(2);
+    bar(10);
+
+
+    //1.匿名自执行函数
+    var t=function(a){
+        console.log(a)
+    }
+    t(9);//尽量少定义全局变量，尽量少污染全局变量。
+
+    ;(function(a){//前面最好加;
+        console.log(a);
+    })(5);
+//    ;(function(a){//前面最好加;
+//        console.log(a);
+//    }(5));//这种也可以，最好是前面这种
+    ;(function(){
+        //在这里模拟块级作用域
+    })();
+
+
+    //2.循环注册DOM事件
+    //其实就是tab标签切换
+    var lis=document.querySelectorAll('li');
+    console.log(lis);//NodeList  是一个类数组对象
+    for(var i=0;i<lis.length;i++){
+        lis[i].onclick=function(e){
+            console.log(i);
+        }
+    }
+
+
+    //3.setTimeOut的闭包应用
+//    setTimeout();//Window的方法
+    //也是bom的一个方法。两个参数
+//    setTimeout(function(){
+//        //当1000毫秒之后执行当前的函数
+//    },1000)
+    for(var i=0;i<10;i++){
+        setTimeout(function(){//注册1秒后的代码执行的很快
+            console.log(i);//10个10
+        },1000)
+    }
+//    解决
+    for(var i=0;i<10;i++){
+        (function(a){
+            setTimeout(function(){//注册1秒后的代码执行的很快
+                console.log(a);//
+            },1000)
+        })(i);
+    }
+
+</script>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script type="application/javascript">
+    /*
+    * 正则表达式
+    *   用于匹配字符串规律规则的表达式。正则表达式是对字符串操作的一种逻辑公式，就是用事先定义好的
+    *   一些特定字符、及一些特定字符的组合，组成一个‘规则字符串’，用来过滤逻辑
+    *   其他语言都支持；
+    *   在线：https://c.runoob.com/front-end/854
+    * */
+    //元字符
+    //限定符
+    //括号相关[] [0-9][adb][1-5d-n][\u4e00-\u9fa5] ;[^a-z]:取反，不是a-z的；[^a-z]+:竟可能多的不是a-z;[^a-z]+?:加？取消贪婪模式*?也算是
+
+    //Javascript中使用正则
+    /**
+     * 创建正则对象RegExp方式1：
+     *  var reg=new RegExp('\d','i');
+     *  var reg=new RegExp('\d','gi');
+     *  RegExp构造函数接受两个参数，第一个是模式表达式，第二个是修饰符。
+     *  方式2：
+     *  var reg=/\d/i;
+     *  var reg=/\d/gi;
+     *  注意：i==>忽略大小写
+     *       g==>全局匹配
+     *       m==>多行
+     *
+     * */
+    //创建一个正则表达式对象
+    var exp1=new RegExp('\\d+','g');
+    console.log(exp1);
+//    简单写法
+    var exp2=/\d+/g;
+    console.log(exp2);
+    /*
+    * 正则对象的属性和方法
+    *   属性：
+    *       RegExp.prototype.global:是否全局搜索。boolean
+    *       RegExp.prototype.ignoreCase：在匹配字符串是否忽略字符的大小写
+    *       RegExp.prototype.lastIndex:下次匹配开始的字符串索引位置，只有设置为g全局模式
+    *           的时候才有用，要么设置为0或者匹配下一个的起始位置。
+    *       RegExp.prototype.multiline:是否多行
+    *       RegExp.prototype.source:模式文本
+    *    方法：
+    *      RegExp.prototype.test(str)
+     *      方法执行一个检索，用来查看正则表达式与指定字符串是否匹配。返回true或false
+     *      var str='hello world!';
+     *      var result=/^hello/.test(str);
+     *      RegExp.prototype.exec(str)：核心方法
+     *          .在一个指定字符串中执行一个搜索匹配。返回一个结果数组或null
+     *          .此方法执行完成后，将会自动更正正则对象中的lastIndex属性
+     *          .方法返回一个数组。第0个元素是匹配的字符串，其后是分组选择的数据，其中
+     *          增加了一个input属性(放原始字符串),还有一个index属性：是匹配元素字符串
+     *          的起始位置的索引。
+     *          如果匹配上的有多个结果，那么每次执行都会返回一个结果，直到最后返回null
+    *
+    *
+    *
+    *
+    * 字符串中支持正则的方法：
+    *   str.search(exp);
+    *       .参数：正则对象，如果传入一个非正则表达式对象，那么会隐士的使用new将他转换为Regexp对象
+    *       .如果匹配成功，则search()返回正则表达式在字符串中首次匹配的索引。否则返回-1
+    *   str.match(exp);
+    *       .参数正则对象。非正则对象会隐士转换
+    *       .如果正则表达式没有g标志，则str.match()会返回和RegExp.exec()相同的结果。而且返回的Array
+    *       拥有一个额外的input属性，该属性饱含被解析的原始字符串。另外，还有一个index属性，该属性表示
+    *       该属性表示匹配结果在元字符串中的索引(从0开始)。
+    *       .如果正则表达式包含g标志，则该方法返回一个Array,它包含所有匹配的子字符串而不是匹配对象。捕获
+    *       不会被返回(即不返回index属性和input属性)。如果没有匹配到，则返回null
+    *   str.replace(regexp|substr,newSubStr)
+    *       .参数：第一个可以是正则表达式也可以是字符串。
+    *       .第二个是要替换的字符串
+    *
+    * */
+    //正则的exec方法
+    var temp;
+    var str='12,34,56';
+//    var  exp=/\d{2}/;
+    var  exp=/\d{2}/g;
+//    console.log(exp.exec(str));//12
+//    console.log(exp.exec(str));//34
+//    console.log(exp.exec(str));//56
+    //exec方法：如果没有匹配的就返回null；如果有匹配的就返回一个数组：0 ：匹配的字符串
+    //index:匹配开始的索引  input：要匹配的字符串  str:原始字符串
+    while((temp=exp.exec(str))!=null){
+        console.log(temp[0]);
+        console.log(exp.lastIndex);//当前匹配完成之后，下一次开始匹配的位置
+    }
+
+
+    //如果有分组：用到了()
+    var str2='12abc,34,fde,45asf';
+    var exp2=/\d{2}(\w)(\w+)/g;
+    console.log(exp2.exec(str2));//[12abc,a,bc]
+    console.log(exp2.exec(str2));//
+
+    //正则高级应用日期替换执行
+    //.*匹配任意多个字符
+    var str='1392945632000,mss,Date(1392945632000)';
+    var date=str.replace(/.*(Date\(\d+\)).*/g,'new $1');
+    console.log(eval(date));
+
+    //给字符串添加双引号
+    var m='12,3,456';
+    var s=m.replace(/\d{2}/g,'"$&"');
+    console.log(s);//$&匹配自身
+
+
+
+</script>
+</html>

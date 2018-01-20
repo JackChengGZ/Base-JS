@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script type="application/javascript">
+    /*
+    * 变量提升
+    * 1.如果一个声明的变量在函数体内，那么他的作用域就是函数内部。如果是在全局环境下声明
+    * 的，那么它的作用域就是全局的。通过var声明的变量是无法用delete删除的
+    * 2.函数内部声明的变量会被提升到函数的头部。函数在解释执行的时候，先进行变量的声明处
+    * 理，然后再运行函数内部的代码。
+    * 3.变量和赋值语句一起写，在js引擎解析时候，会将其拆成声明和赋值2部分，声明置顶，赋值
+    * 保留在原来的位置
+    * 4.变量重复声明不会出错，后面的会覆盖前面的
+    *
+    * */
+    var a=10;//全局变量
+    function f1(){
+      //函数的变量提升：因为在函数执行之前，先创建了函数的EC,在创建EC的时候已经把函数
+      //里面声明的变量都已经初始化成了undefined
+        //如果下面没有定义a=19,那么它会 输出10,它会到全局GEC去查找a值
+        console.log(a);//a==>undefined
+        var a=19;
+        console.log(a);//a==>19
+
+    // 特殊情况：当变量声明和函数声明 同时拥有一个名字的时候，优先级高
+        console.log(b);//function(){}
+        var b=1;
+        function b(){}
+        console.log(b);//9
+    }
+    f1();
+    console.log(a);//a==>10
+
+
+    //变量提升面试题
+    //1.
+    if(!('a' in window)){
+        var a=1;
+    }
+    console.log(a);//undefined
+
+    //2.
+    f();
+    console.log(b);
+    console.log(c);
+    console.log(a);//报错
+    function f(){
+        var a=b=c=9;//a是局部的，b c是全局的
+        console.log(a);
+        console.log(b);
+        console.log(c);
+    }
+
+
+
+    //一个特殊的函数声明提升  尽量不要在控制语句中进行声明，会造成很多无法预知的bug
+    function f(){return 'g'}
+    //    var f='g';
+    function test(x){
+        var result=[];
+        if(x){
+            function f(){return 'l'}
+//            var f='l';
+        }
+
+        result.push(f());
+//        result.push(f);
+        return result;
+    }
+    console.log(test(0));//如果f是函数 会报错   在老版本中不会报错IE10
+</script>
+</html>

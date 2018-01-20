@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script type="application/javascript">
+    /*
+    * 值类型和引用类型
+    * js:是单线程，只能顺序执行
+    *
+    * 统一堆栈：
+    * 栈内存：存的是值类型  string  number boolean null undefined
+    * 堆内存：存的是引用类型
+    * 在js堆栈：
+    * 变量对象(栈)：简称VO
+    * */
+    var a= 9,b=0;
+    var c={age:9},d;
+
+    //把a值类型给b;
+    b=a;
+    b=19;
+    console.log(a);//9
+    console.log(b);//19
+
+    //如果是引用类型的操作
+    d=c;//只是地址值的给了d
+    d.age=22;
+    console.log(c.age);//22
+    console.log(d.age);//22
+
+
+
+    /*
+     * 在这里提一下 深拷贝和浅拷贝的概念 ：深浅拷贝是相对于引用类型
+     *基本类型(值类型)拷贝的时候只是在内存中又开辟了新的空间,没有深浅拷贝说法
+     * */
+
+    //浅拷贝：有一定的影响
+    var father1 = {name:'shangdi',age:1000,job:['teacher','cook']};
+    //浅拷贝函数
+    function copy(obj){
+        var childs = {};
+        for(var key in obj){
+            childs[key] = obj[key];
+        }
+        return childs;
+    }
+    var child1 = copy(father1);
+    console.log(child1);    //{name:'shangdi',age:1000,job:['teacher','cook']};
+    console.log(typeof child1); //object
+
+    //改变子对象的name属性，发现对父对象的name没有影响 哈哈！
+    child1.name = 'bangbang';
+    console.log(father1);   //{ name: 'shangdi', age: 1000 }
+    console.log(child1);    //{ name: 'bangbang', age: 1000 }
+
+    //注意：这次改变子对象的job属性也就是改变数组,
+    //发现对父对象的job竟然有影响,吓死宝宝了，那怎么办呢,那这个copy有什么用呢是吧！
+    child1.job.push('programer');
+    console.log(father1);   //{ name: 'shangdi',age: 1000,job: [ 'teacher', 'cook', 'programer' ] }
+    console.log(child1);    //{ name: 'shangdi',age: 1000,job: [ 'teacher', 'cook', 'programer' ] }
+
+
+    //深拷贝：就是把父对象拷贝到子对象上，而且两者的内存和以后的操作都互不影响的拷贝！
+    //方法一
+//    function deepCopy(obj) {
+//        return JSON.parse(JSON.stringify(obj));
+//    }
+
+    //方法二
+    function deepCopy(p,c){
+        c = c || {};
+        for (var i in p){
+            if(p.hasOwnProperty(i)){
+                if(typeof p[i] === 'object'){
+                    c[i] = Array.isArray(p[i]) ? [] : {};
+                    deepCopy(p[i],c[i]);
+                }else{
+                    c[i] = p[i];
+                }
+            }
+        }
+        return c;
+    }
+    console.log('______________________')
+    console.log(deepCopy(father1,{}))
+</script>
+</html>

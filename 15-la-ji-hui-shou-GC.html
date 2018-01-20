@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script type="application/javascript">
+    /*
+    * 垃圾回收机制  js自动回收
+    *1. Javascript本身具有垃圾回收机制(GC:Garbage Collection).我们不用关心变量的
+    * 内存申请和回收
+    *2.在C和C++等语言中，开发人员可以直接控制内存的申请和回收。但是在Java、C#、Javascript
+    * 语言中，变量的内存空间的申请和释放都由程序自己处理，开发人员不需要关心。
+    *3.垃圾收集器会定期(周期性)找出那些不在继续使用的变量，然后释放其内存。
+    *4.js中最常用的垃圾回收方式就是标记清除。当变量进入环境时，例如，在函数中声明一个
+    *变量，就将这个变量标记为'进入环境'.从逻辑上讲，永远不能释放进入环境的变量所占用的
+    * 内存，因为只要执行流进入相应的环境，就可能会用到他们。而当变量离开环境时，则将其标记
+    * 为'离开环境'。被标记离开环境的变量在下一次垃圾回收启动的时候会被释放掉占用的内存空间
+    * 5.Javascript引擎基础GC方案是(simple GC):mark and sweep(标记清除)，即：
+    *       从根对象开始遍历所有可访问的对象
+    *       回收已不可访问的对象
+    *
+    *
+    *垃圾回收的应用：
+    *  1.数组的清零操作
+    *       arr=[];//虽然能够清空arr数组，但是新建了一个[]空数组对象。
+    *       最好的办法是：arr.length=0;//即可清除数组内容，还不额外开辟新内存。
+    *  2.对象尽量复用，尤其是在循环等地方出现创建新对象，能复用就复用。不用的对象，
+    *  尽可能设置为null,尽快被垃圾回收掉
+    *  3.在循环中的函数表达式，能复用最好放到循环外面
+    * */
+
+
+    //Javascript内存管理
+    var m= 0,n=19;//把 m,n,add()标记为进入环境
+    add(m,n);//把a,b,c标记为进入环境
+    console.log(n);//a,b,c标记为离开环境，等待垃圾回收
+    function add(a,b){
+        a++;
+        var c=a+b;
+        return c;
+    }
+
+
+    //垃圾回收的应用 :不在被引用的变量
+    //1.数组的清零
+    var a=[13,2,32,46,8];
+    a.forEach(function(item){
+        console.log(item);
+    });
+    //a=null;//首先是把a转为null类型了
+    a.length=0;//可以直接让数组清空，而且数组类型不变
+
+    //2.对象复用
+    var t={};
+    for(var i=0;i<10;i++){
+//       var t={};
+        t.age=19;
+        t.name='Jack';
+        t.index=i;
+        console.log(t);
+    }
+    t=null;//如果对象不用了，那就立即设置为null;等待垃圾回收
+
+    //在循环中最好不要使用函数表达式
+    function t(a){
+        console.log(a);
+    }
+    for(var k=0;k<10;k++){
+//        var t=function(a){
+//            console.log(a);
+//        }
+        t(k);
+    }
+</script>
+</html>

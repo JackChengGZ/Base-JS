@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script type="application/javascript">
+    var a= 9,
+        b={name:'Jack',age:18};
+
+    //把a,b传入demo
+    /*对函数的参数：如果是简单类型会做一个值类型的数值副本传到函数
+    *              如果是引用类型会做一个地址值复制传到函数
+    * */
+    function demo(c1,c2){
+        c1=29;//对c1进行更改
+        c2.name='666';//改变c2的name
+    }
+    //执行函数  还是同样的道理c1会是从新开辟一个变量空间，c2也会但是还是地址值
+    demo(a,b);
+    console.log(a);//9
+    console.log(b);//b.name=>666
+
+</script>
+</html>

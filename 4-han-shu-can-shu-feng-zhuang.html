@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script type="application/javascript">
+    /*
+    * 函数参数的封装：
+    * 主要是当函数的形参数过多，比如说4个以上，就将函数参数对象化
+    * 如果形参多：开发人员记忆不方便，传递参数顺序易错，编写代码不方便
+    * */
+    //封装一个矩形：参数===>width height 背景色  文字信息  x y....
+    //rectObj:将形参封装成一个对象
+    function rect(rectObj){
+        //拿到值
+        console.log(rectObj.x);
+    }
+    var rectObj={
+        x:19,
+        y:20,
+        width:200,
+        bgColor:'#ccc',
+        text:'Jack'
+    }
+    rect(rectObj);
+</script>
+</html>

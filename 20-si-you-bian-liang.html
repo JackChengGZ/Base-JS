@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script type="application/javascript">
+    /*
+    * 私有变量
+    * .Javascript中并没有私有变量的概念，但是我们可以通过某些方式进行模拟。所谓私有
+    * 变量就指：对象的某个属性只能通过对象的方法进行访问，不能直接通过对象进行访问。
+    * .构造函数模拟私有变量的方式
+    * .其他模拟方法
+    *
+    * */
+    //通过闭包对变量的私有化
+    //第一种 工厂模式
+    function Person(){
+        var age=0;//通过方法来操作age
+        this.getAge=function(){
+            return age;
+        }
+        this.setAge=function(a){
+            age=a;
+        }
+    }
+    var p=new Person();
+    p.setAge(90);
+    console.log(p.getAge());
+
+    //第二种 对象模式
+    function Person(){
+        var age=0;
+        return{
+            getAge:function(){
+                return age;
+            },
+            setAge:function(num){
+                age=num;
+            }
+        }
+    }
+</script>
+</html>

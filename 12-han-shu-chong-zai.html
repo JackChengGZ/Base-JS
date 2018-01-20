@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script type="application/javascript">
+    /**
+     * 函数的重载
+     * .Javascript中函数不能重名，如果重名后面的会把前面的覆盖。
+     * .原因：所有的函数声明都会创建在VO或者AO上的一个属性。而后面声明的函数会把前面VO
+     *  或者AO中的同名属性覆盖。
+     * .重载的概念：在程序中可以定义相同名字，不同参数的形式的不同函数。函数在调用的函数
+     *  的时候，自动识别不同参数对应的函数，实现了相同函数名不同的函数调用
+     * .Javascript中通过arguments实现函数重载
+     * .数组的slice方法、splice方法等都可传递一个参数或者多个参数，不同参数方法内部实现
+     * 不一样，就是方法重载
+     *
+     * */
+    //arguments模拟函数的重载
+    //创建一个矩形的类型，构造函数如果传入是一个参数就是正方形，如果两个就是长方形
+
+    function React(){
+        //如果传入的是一个参数，那就返回一个正方形
+        if(arguments.length>=1){
+            this.width=arguments[0];
+            this.height=arguments[0];
+        }
+        //如果传入的是两个参数，那就返回一个长方形
+        if(arguments.length>1){
+            this.width=arguments[0];
+            this.height=arguments[1];
+        }
+        //覆盖原型上的toString()
+        this.toString=function(){
+           return  'width:'+this.width+' height:'+this.height;
+        }
+    }
+    var r1=new React(10);
+    console.log(r1.toString());
+    var r2=new React(10,9);
+    console.log(r2.toString());
+
+//    gulp 侧重任务管理  css html img等文件
+//    webpack侧重打包  webpack侧重于模块化  js文件
+
+</script>
+</html>

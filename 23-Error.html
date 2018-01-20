@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script type="application/javascript">
+    /*
+    * 错误信息对象Error
+    *   抛出信息错误可以直接使用Error对象
+    *   属性：
+    *       name:错误名
+    *       number:错误号
+    *       description:描述
+    *       message:错误信息，多同description
+    *   使用：(标准浏览器参数如下)
+    *       new Error([message[,fileName[,lineNumber]]])
+    *       new Error([lineNumber[,description[,message]]])
+    *   其他错误对象：(新版浏览器)
+    *       EvalError:错误发生在eval()中
+    *       SyntaxError:语法错误
+    *       RangeError:数值超出范围
+    *       ReferenceError:引用不可用
+    *       TypeError:变量类型不是预期的
+    *       URIError:错误发生在encodeURI或decodeURI()中
+    *
+    * */
+//    if(typeof (1)!='number'){
+////        throw new Error('错误信息')
+//        var e=new Error();
+//        e.message='错误信息';
+//        e.name='param type error';
+//        throw e;
+//    }
+//    try{
+//        add();
+//    }
+//    catch (){
+//
+//    }
+    var now=new Date();
+    console.log(now.getTime());
+</script>
+</html>

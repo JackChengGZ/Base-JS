@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script type="application/javascript">
+    /*
+    * 原型链
+    *   .函数的原型对象(prototype)   :对象之间的链条
+    *   .原型对象的构造函数(constructor)   ：构造函数之间的链条
+    *   .内部原型(_proto_)
+    *
+    *
+    *   1.Javascript是基于原型的面向对象语言。也就是说所有对象都是基于原型上进行创建，
+    *   而不像Java和C#等是基于一个类型的模板创建。
+    *   2.函数都有prototype属性指向函数的原型对象。[只有函数根除外]
+    *   3.所有对象都有_proto_属性(非标准属性，但是所有浏览器都实现了)【null除外】
+    *   4.Object是构造函数，也是对象。Object的prototype是所有对象的根。
+    *   5.Function是函数对象的构造函数。Function的原型对象是所有函数的根。而它的内部
+    *   原型是Object的原型对象，这就是关键点了。
+    *
+    *   注意：
+    *   1.Object的prototype是所有对象的根 ：Object.prototype,他是一个对象，所以
+    *   他的_proto_的属性指向null==>  Object.prototype.__proto__==null  返回true
+    *   2.null也是一个对象，Object.prototype就是由null实例化创建而来；
+    *   3.在Object中的_proto_属性指向的是Function.prototype
+    *   4.所有函数的原型对象的__proto__都指向Object.prototype(去掉Function)
+    *   5.Function的prototype是所有函数的根：Function.prototype
+    *
+    *
+    * 构造函数的原型对象
+    *    构造函数都有prototype属性，称为构造函数。
+    *    通过构造函数创建出来的对象都会继承构造函数原型上的方法属性。
+    *    原型对象上都有constructor指向对应的构造函数。
+    *
+    * */
+    function Dog(){
+        this.age=20;
+    }
+    Dog.prototype.weight=20;
+    var d=new Dog();
+</script>
+</html>

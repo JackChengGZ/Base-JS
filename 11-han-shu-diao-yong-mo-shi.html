@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script type="application/javascript">
+    /*
+    * 函数的四种调用模式和this
+    * 1.方法调用模式
+    *   如果一个函数作为对象的一个方法属性调用，那么就是方法调用模式
+    *   var a={};a.toString();//方法的调用模式
+    *   方法调用模式的this指向调用对象
+    * 2.函数调用模式
+    *   如果一个班函数直接调用，那么调用者其实就是全局对象：window
+    *   函数调用模式this指向全局对象
+    *   function(){}; f();//函数调用模式
+    * 3.构造器调用模式
+    *   构造器调用模式就是构造函数调用
+    *   构造器调用模式必须有new关键字存在
+    *   构造器调用模式的this指向创建出来的新对象
+    *   var obj=new Dog();//构造器调用模式
+    *   构造函数可以返回一个值，但是如果是简单类型会被忽略，如果是引用类型会替换掉新创建的对象返回
+    * 4.apply/call调用模式(借用方法模式)
+    *   apply/call可以改变函数调用的内部this指向
+    *   apply和call的功能一样，只不过参数不一样，第一个参数都是改变函数内部的this的指向。
+    *   第一个参数如果是null、undefined会被全局对象替代，如果是简单类型会被包装类型替代
+    *   call的第二个参数是单个出入
+    *   apply的第二个参数是数组
+    *   调用：function m(a){}; m.call(window,2);m.apply(window,[2]);
+    *
+    *
+    * */
+    //1.方法调用模式
+       //定义构造函数(类)Number String ..
+       //定义一个Dog类的构造函数
+    function Dog(dogName){
+        //如果函数当做构造函数来用
+        //1.创建一个空对象 === this
+        //2.把这个空对象赋值给函数的上下文  this===新对象
+
+        this.name=dogName;
+        this.age=0;
+        this.run=function(){
+            console.log(this.name+'is running..')
+        }
+        //并没有返回任何数据，默认就会返回新对象
+    }
+    //使用构造函数创建一个Dog的实例
+    var d=new Dog('ld');
+    d.run();//调用d对象实例的run方法。这就是对象的方法调用模式
+    //此时这个this就会指向d;
+
+    //2.构造器调用模式  就是构造函数 new
+    function Cat(){
+        //如果函数当做构造函数来用
+        //1.创建一个空对象 === this
+        //2.把这个空对象赋值给函数的上下文  this===新对象
+        this.age=19;
+        this.name='cat';
+        this.run=function(){
+            console.log(this.name+'run...');
+        }
+        //return 3;//及时有返回值，如果返回值类型是简单类型，那么会被忽略。
+        //return null;
+
+        //如果返回一个引用类型(去掉null),那么就会替代原来的对象
+        return {//return 了一个引用类型
+            name:99,
+            run:function(){
+                console.log('自己返回的')
+            }
+        }
+    }
+    var cat=new Cat();//构造函数  使用new 就会立马触发了构造函数执行模式
+    cat.age=20;
+    cat.name='nnn';
+
+    //3.函数调用模式
+    function f(a,b){
+        console.log(a+' '+b);
+        console.log(this);//window对象  严格模式下是undefined
+    }
+    f(2,3);
+
+
+    //4.call和apply调用模式
+    function sum(a,b){
+        console.log(this);
+        return a+b;
+    }
+    sum(1,2);
+    var t={
+        name:'Jack'
+    };
+    //fun.call(fEC,params1,params2..)
+    var m1=sum.call(t,2,35,6,89);
+    console.log(m1);//37
+    var m2=sum.apply(t,[5,6,7])
+    console.log(m2);//11
+    //如果传入的参数是原始类型，那么就会出现一些变化,例如：
+    //如果穿的第一个参数是null,undefined就会转为window
+    //如果传入的是number string boolean 转为对象的包装类型
+    var m3=sum.call(null,36,14);
+    console.log(m3);//window 50
+    var m4=sum.call(undefined,36,14);
+    console.log(m4);//window 50
+    var m5=sum.call(1,36,14);
+    console.log(m5);//Number 50
+    var m6=sum.call('h',36,14);
+    console.log(m6);//String 50
+    var m7=sum.call(true,36,14);
+    console.log(m7);//Boolean 50
+
+
+    //面试题
+//    1.定义一个按钮类，要求按钮类的构造函数可以接受函数参数初始化按钮的宽度、高度、x y
+    function Btn(width,height,x,y){
+        //构造函数初始化的代码
+        this.width=width;//给this对象上的为width属性赋值  width参数值
+        this.x=x;
+        this.y=y;
+    }
+    var b=new Btn(100,100,100,100);
+
+//    2.借用Math的min方法实现求数组[45,6,89,2];的最小值
+//    var m=Math.min(10,29,3);
+//    console.log(m)
+    var minNum=Math.min.apply(null,[45,6,89,2]);
+    console.log(minNum);
+
+//    3.把类数组对象转为数组
+    var t={}
+    t[0]=1;
+    t[1]=true;
+    t[2]='Jack';
+    t.length=3;
+
+//    var m=[1,2,3];
+//    m.slice();//什么都不传默认是从0开始
+    //如果借用数组的slice方法，然后把this指向t对象，那么slice方法就会返回t对象对应的数组
+    var k=Array.prototype.slice.call(t,0);
+    console.log(k);
+
+//    4.判断代码的输出内容
+        function Dog(){
+            console.log(this);
+        }
+        Dog();//函数调用模式
+//        var d=new Dog();//构造函数调用模式
+        Dog.call(null)//借用调用模式
+
+
+</script>
+</html>

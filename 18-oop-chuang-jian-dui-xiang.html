@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script type="application/javascript">
+    /*
+    * 面向对象
+    * 1.面向对象的概念
+    * 2.对象的创建
+    * 3.面向对象的继承(最重要的)
+    *
+    * 面向对象就是一种思考问题和组织代码的方式
+    * 把任何的数据和行为抽象成一个形象的对象，类似于人生活中思考的方式，就是面向对象
+    * 继承：相类似的对象进行公共抽象，并公共复用就是继承
+    *
+    *
+    * 对象属性和行为复用
+    * .工厂方式创建对象
+    * .构造函数创建对象
+    * .原型创建对象
+    *     .原型动态性
+    *     .赋值新对象的原型创建方式及constructor处理
+    * .混合模式：原型+构造函数
+    * .寄生构造函数模式
+    * .稳妥构造函数模式
+    *
+    * */
+
+
+    //1.工厂方式创建对象
+    /*工厂创建对象的方法：
+    * 优点：可以重复创建相类似的对象 有默认公共属性
+    * 缺点：1.对象的原型不能确认具体的类型、对象的构造函数也不明确
+    *      2.对象的方法不能复用，每个对象的内存中都存储一份函数对象的内存
+    * */
+    //普通直接量的创建  如果是创建一个对象就可以用这个
+    var a={};//不能重复利用  设置公共属性的代码
+    //工厂模式  适合创建多个具有相同属性、方法的对象
+    //如果需要创建10个Cat对象，每个对象都有年龄 姓名等。
+    function createCat(age,name){//工厂模式就是标准化的生成默认对象的函数
+        var o=new Object();
+        o.age=age;
+        o.name=name;
+        o.run=function(){
+            console.log(name+'  running....')
+        }
+        return o;
+    }
+//    var c=createCat(19,'dd');//不加new 也可以
+    var c=new createCat(19,'dd');
+    c.run();
+    console.log(c.__proto__);//c指向的Obejct.prototype
+
+
+
+    //2.构造函数创建对象
+    /*
+    * .构造函数模式
+    * 优点：
+    *   .所有创建出来的对象，都可以找到它的原型和构造函数。
+    *   .公共的属性和方法也可以在创建的时候统一和维护
+    * 缺陷：
+    *   .对象的函数，每个对象都会拥有一份内存拷贝。浪费内存
+    * */
+    //构造函数模式
+    function Cat(age,name){
+        this.age=19;
+        this.name='ss';
+        this.run=function(){
+            console.log(name+'  running....');
+        }
+    }
+    var c1=new Cat(19,'ss');
+    c1.run();
+
+
+
+    //3.原型创建对象
+    /*
+    * 优点:
+    *   所有原型上的属性和方法在所有的新对象中可以进行共享
+    * 缺点：
+    *   如果对象需要自己特有的属性值，不与其他对象共享，则必须跟构造函数模式配合
+    * */
+    //原型构造对象的模式
+    function Cat(){}
+    Cat.prototype.run=function(){
+        console.log(this.name+' running...');
+    }
+    Cat.prototype.name='black Cat';
+    Cat.prototype.age=19;
+    var c1=new Cat();
+    var c2=new Cat();
+    c1.name='good Cat';
+    //c2还是black Cat
+
+
+    //4.组合构造函数模式与原型模式构建对象
+    /*
+    * .组合使用构造函数模式与原型模式:一般属性放在构造函数上，方法放在原型上
+    * .公共的属性和方法放到原型上，独有的属性使用构造函数模式，放到对象自己身上
+    * .优点：
+    *       既保证了方法等共享属性只能在内存中保存一份，节省内存
+    *       又可以实现每个对象有自己单独存放的属性。是一种经典的构建对象的方法
+    * */
+    function Cat(age,name){//一般构造函数的首字母大写，我们也称是Cat类
+        this.age=age;//每个对象都有自己私有的属性值得属性，放到构造函数中。
+        this.name=name;
+    }
+    //一般类型的方法，都在原型上，让所有的对象都有共享方法的内存
+    Cat.prototype.run=function(){
+        console.log(this.name+'  running...');
+    }
+    var c1=new Cat(13,'Tom');
+    var c2=new Cat(23,'Jack');
+
+
+
+    //5.稳妥构造函数模式
+    /*
+    * 优点：
+    *   .可以共享属性和方法的初始化代码
+    *   .无论用户是否用了new还是没有使用new都会被正确的返回新的对象
+    * 缺点：
+    *   .无法追溯对象的原型和构造函数，默认没有公共的属性和方法，内存浪费
+    *
+    * */
+    //稳妥构造函数模式
+    function Cat(){
+        var o={};
+        o.age=10;
+        o.name='Jack';
+        o.run=function(){
+            console.log(o.name+'  running...')
+        };
+        return o;//如果是构造函数执行模式，如果返回的是一个引用类型，就把引用类型返回
+        //如果是简单类型，那么就返回this
+    }
+    //稳妥构造函数模式，要实现使用new构造一个对象和一个不使用new构造一个对象效果一样
+    var c1=new Cat();//构造函数调用模式
+    var c=Cat();//函数调用模式
+    //其实加不加new 就是通过return返回一个数据类型
+    //缺点：不能找到溯源，原型 构造函数 对象的方法内存不能共享，浪费内存
+</script>
+</html>

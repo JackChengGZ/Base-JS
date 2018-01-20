@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script type="application/javascript">
+/*
+* 作用域链
+*   作用域链是一个数组
+*   作用域链是控制变量作用域的有序访问的js内部实现。
+*   作用域链存储在函数的执行上下文(EC)中，作用域链中存放的是执行环境(EC)中的VO或者AO。
+*   当前函数的作用域对象都是在最前端，而且全局的在最末端
+*   变量(标识符)的搜索都是从作用域链的最前端向后搜索，直到全局作用域，标识符的
+*   解析是沿着作用域一级一级搜索的过程，从第一个对象开始，逐级向后回溯，直到找
+*   到同名标识符为止，找到后不再继续遍历，找不到就报错
+* */
+    //作用域
+    var t= 0,m=10;//定义了两个全局变量  存储在VO中
+
+    var res=fParent(t,m);//res也是全局的变量
+    console.log(res);
+
+    function fParent(a,b){//全局函数声明 fParent
+        var vParent='parent';//这个是局部变量 存在AO
+
+        function fChild(c){
+            var vChild='child';
+            return c+vChild;
+        }
+        return a+b+vParent+fChild(a);
+    }
+
+</script>
+</html>

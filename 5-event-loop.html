@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script type="application/javascript">
+    /*
+    * 事件循环机制：Event Loop ==> 这个是针对于浏览器的，对于服务器端Node还是有点不同
+    *
+    * 队列的数据结构：先进先出  类似数组的push(尾)  shit(头)
+    * 浏览器：
+    *       Javascript执行线程：js代码
+    *       UI线程：负责UI展示
+    *       Javascript事件循环线程
+    * Javascript是单线程的：
+    *           因为JavaScript执行线程和UI线程是互斥的
+    *           代码是排队执行的,不会同步执行多个任务
+    *           任务可以分为：同步任务和异步任务
+    *           同步：一般的赋值操作、循环、分支语句等
+    *           异步：DOM事件、ajax、BOM的一些API等
+    *
+    * 事件循环机制：
+    *       Javascript的执行引擎的主线程从任务队列中获取任务执行
+    *       如果任务是异步的，那么运行到异步任务时候，异步任务就退出主线程，主线程进行下一个任务的获取
+    *       如果异步任务完成，就插入到任务队列的末尾，等待主线程处理
+    *
+    * */
+</script>
+</html>

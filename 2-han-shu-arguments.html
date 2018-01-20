@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script type="application/javascript">
+    /*
+    * 形参：函数定义的参数
+    * 实参：函数调用时实际传递的参数
+    *
+    * 当实参个数少于形参，后面的参数对应赋值undefined
+    * 当实参个数多于形参的个数，可以通过arguments访问
+    * */
+    function max(a,b){
+        console.log(max.length)//这个是形参的个数
+        console.log(arguments.length)//这个是实参的个数
+        console.log(arguments);//存放的是实参 是一个类数组 是一个object类型
+        if(a>b){
+            return a;
+        }else{
+            return b;
+        }
+//        console.log(arguments);//在这里肯定不能打印，因为前面的return
+    }
+    var t=max(9,10);
+    console.log(t);
+    var m=max(1,2,3,4,5);
+    console.log(m);
+
+    //实现max方法，可以接受任意多个参数，返回这些参数中最大的一个
+    function myMax(){
+        //如果调用没有传参数，提示错误
+        if(arguments.length<=0){
+            return '没有参数不可以调用';
+        }
+        var max=arguments[0];
+        for(var i=1;i<arguments.length;i++){
+            if(arguments[i]>max){
+                max=arguments[i];
+            }
+        }
+        return max;
+    }
+    console.log(myMax(13,4,56,78));
+
+</script>
+</html>

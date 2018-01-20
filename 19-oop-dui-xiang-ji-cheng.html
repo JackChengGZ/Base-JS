@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script type="application/javascript">
+    /*
+    前面说的几种创建对象的方式都是为了对象的继承服务的
+    * 对象的继承
+    * 1.原型的继承方式
+    * 2.借用构造函数继承
+    * 3.组合继承
+    * 4.原型方法继承(原型式)
+    * 5.寄生继承方式
+    * 6.终极方式：寄生组合的方式
+    * */
+    //1.原型继承模式
+    //动物基类
+    function Animal(age,name){
+        this.age=age;
+        this.name=name;
+        this.foods=['鱼','水果','鸟'];
+    }
+    //在动物基类上添加方法
+    Animal.prototype.run=function(){
+        console.log(this.name+' running...');
+    }
+    //子类Cat
+    function Cat(age,name){
+        this.age=age;
+        this.name=name;
+    }
+    //原型继承方式：让Cat继承Animal的属性和方法
+    //原本 Cat.prototype.constructor===Cat
+    Cat.prototype=new Animal();//设置完之后那么Cat.prototype.constructor指向的是Animal
+//    console.log(Cat.prototype.constructor===Animal);//true;
+    Cat.prototype.constructor=Cat;
+
+    var c=new Cat(19,'ccc');
+    c.run();//从Animal原型上继承的方法
+
+    c.foods.push('栗子');//在c对象foods上添加值，那么忧郁他是一个引用类型，导致父类
+    //的值整个发生变化，并储存下来,如果c对象中添加了那么之后创建的新对象也会改变，产生共享
+    var c2=new Cat(20,'aa');
+    console.log(c2.foods);//["鱼", "水果", "鸟", "栗子"]
+    //问题：
+    //1.子类Cat的构造函数的参数(age,name)，没法传递给父类Animal的构造函数
+    //2.子类的原型的constructor会被改变
+    //3.如果父类里有引用类型的属性，那么所有的子类会共享这个引用类型  比如c2中的值也改变了
+
+
+
+
+
+    //2.组合继承模式：原型继承+借用构造函数继承
+    //父类
+    function Animal(age,name){
+        this.age=age;
+        this.name=name;
+        this.foods=['水','苹果'];
+    }
+    Animal.prototype.run=function(){
+        console.log(this.name+' running');
+    }
+    //定义子类
+    function Cat(age,name){//借用构造函数继承
+        //第一次次执行了父类的构造函数
+        Animal.call(Cat,age,name);//为了不再频繁的在子类定义父类中已有的属性，可以通过构造函数的call方法
+    }
+    //第二次执行了父类的构造函数 (这就出现了父类的属性执行了两次)
+    Cat.prototype=new Animal();//原型继承
+    Cat.prototype.constructor=Cat;
+    var c=new Cat(19,'dd');
+
+
+
+
+    //3.原型式继承
+    //.原型式继承是避免调用父类构造函数的一种巧妙的方式。本质就是借用对象来构造另外一个对象
+    //.缺点：原型对象上的引用类型的属性会造成子类对象进行共享
+    //o就是借用的对象
+    function object(o){
+        function F(){}
+        F.prototype=o;//让空函数的原型指向o对象  通过原型式继承
+        return new F();//创建一个f实例，f的内部原型指向o对象
+    }
+    var m={age:22,name:'Jack',foods:['苹果','香蕉']};
+    var m1=object(m);//m1区继承m上的属性方法
+    console.log(m1.foods);
+    m1.age=16;
+    console.log(m1.age);
+    //优点：不需要new构造函数就可以直接构造其他对象
+    //缺点：所有构造出来的实例对象会共享 原型对象上的引用类型的属性
+    //可以使用ES5  Object.create()
+
+
+
+
+
+    //4.寄生继承模式
+    //寄生继承模式是在原型式继承模式上增强原型对象的增强模式。只是对原型式继承的扩展而已
+    //寄生继承类似一个工厂模式，工厂内部把原型对象进行构造出另外一个实例，并对构造出来的实例进行增强，最后返回这个实例
+
+    //原型式继承，o就是借用的对象
+    function object(o){
+        function F(){}
+        F.prototype=o;//让空函数的原型指向o对象  通过原型式继承
+        return new F();//创建一个f实例，f的内部原型指向o对象
+    }
+    //寄生继承方式：其实就是传一个对象到一个方法(工厂方法),方法内部根据传来的对象构造一个
+    //新对象，并对新对象进行扩展增强，返回新对象
+    function createPerson(p){
+        var o=object(p);//同p对象构造一个对象o
+        o.say=function(){//对我新构造出来的对象o进行扩展
+            console.log('hi');
+        }
+        return o;
+    }
+
+
+
+
+    //5.寄生组合继承模式：寄生继承模式+借用构造函数
+    //由于组合继承模式需要执行两次的父类的构造函数，使用寄生继承模式替换原型继承模式，
+    //那么就可以实现父类的构造函数只执行一次的效果，是目前认为最经典的继承模式，最好的继承模式。
+    function Animal(age,name){
+        this.age=age;
+        this.name=name;
+        this.foods=[1,2,3];
+    }
+    //父类原型上的方法通过寄生继承
+    Animal.prototype.run=function(){
+        console.log(this.name+'  running');
+    }
+    function Cat(age,name){//借用构造函数继承
+        //使用借用构造函数继承模式来构建对象的实例属性
+        Animal.call(this,age,name);//这就保证了这个this之后会指的是c而不是Cat
+        //也就不存在当我改变foods的时候，所有实例都会改变
+    }
+//    Cat.prototype=new Animal();//多执行了一次父类的构造函数
+    //寄生继承
+    Cat.prototype=inheritForm(Animal.prototype);
+    function inheritForm(o){
+        var t=object(o);
+        t.constructor=Cat;//把Cat原型的构造函数指回Cat构造函数
+        return t;
+    }
+    //原型式继承
+    function object(o){
+        function F(){}
+        F.prototype=o;
+        return new F();
+    }
+    var c=new Cat(19,'Jack');
+    c.run();
+    var c2=new Cat(19,'Tom');
+    c2.run();
+
+</script>
+</html>
